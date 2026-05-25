@@ -4,6 +4,16 @@ import random
 # --- CẤU HÌNH TRANG ---
 st.set_page_config(page_title="K10 - Ôn tập từ vựng - Bài 2", page_icon="📚", layout="centered")
 
+# --- ẨN THANH MENU MẶC ĐỊNH CỦA STREAMLIT ---
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 # --- DỮ LIỆU TỪ VỰNG ---
 vocab_list = [
     {"hanzi": "重新", "pinyin": "chóngxīn", "meaning": "lại, từ đầu"},
@@ -26,13 +36,12 @@ vocab_list = [
 ]
 
 # --- DỮ LIỆU CÂU HỎI TRẮC NGHIỆM (33 Câu) ---
-# Format: (Câu hỏi, Đáp án đúng, [3 đáp án nhiễu có độ khó cao])
 raw_quiz_data = [
     # Nhóm 重新
     ("这张画没画好，我要_____画。", "重新", ["专门", "平时", "差不多"]),
     ("这个计划有些问题，经理要求大家_____考虑一下。", "重新", ["专门", "真正", "好像"]), 
     
-    # Nhóm 尽管 (Đã thay bằng 2 câu từ vựng HSK2-3 cực kỳ dễ hiểu)
+    # Nhóm 尽管
     ("_____我很累，但是我也要把今天的作业写完。", "尽管", ["好像", "平时", "正好"]),
     ("_____这家饭馆的菜很好吃，可是价格太贵了。", "尽管", ["专门", "重新", "差不多"]),
     
@@ -72,7 +81,7 @@ raw_quiz_data = [
     ("跟老朋友_____，吃吃饭、聊聊天儿，多高兴啊！", "聚会", ["联系", "友谊", "适应"]),
     ("大家都忙于工作，连春节的家庭_____都没时间参加。", "聚会", ["联系", "友谊", "逛"]),
     
-    # Nhóm 联系 (Đã bổ sung chú thích từ vựng)
+    # Nhóm 联系
     ("电子邮件是我和老师最常用的_____方式。", "联系", ["聚会", "友谊", "交"]),
     ("换了新手机号码后，记得及时跟所有的客户_____。<br>*(Chú thích: 及时 /jíshí/: kịp thời; 客户 /kèhù/: khách hàng)*", "联系", ["交", "适应", "聚会"]),
     
@@ -107,7 +116,7 @@ def init_quiz():
     
     for q_text, correct, distractors in raw_quiz_data:
         options = [correct] + distractors
-        random.shuffle(options) # Đảo vị trí các đáp án A B C D
+        random.shuffle(options)
         
         questions.append({
             "question": q_text,
@@ -115,12 +124,10 @@ def init_quiz():
             "options": options
         })
     
-    # Xáo trộn thứ tự 33 câu hỏi
     random.shuffle(questions)
     st.session_state.quiz_questions = questions
     st.session_state.submitted = False
 
-# Chạy khởi tạo lần đầu tiên
 if 'quiz_questions' not in st.session_state:
     init_quiz()
 
@@ -228,65 +235,4 @@ col1, col2, col3 = st.columns([1, 2, 1])
 with col1:
     st.button("⬅️ Trước", on_click=prev_card, use_container_width=True)
 with col2:
-    st.markdown(f"<div style='text-align: center; font-size: 16px; padding-top: 5px;'>Từ {st.session_state.card_index + 1} / {len(vocab_list)}</div>", unsafe_allow_html=True)
-with col3:
-    st.button("Tiếp ➡️", on_click=next_card, use_container_width=True)
-
-st.markdown("---")
-
-# ==========================================
-# 2. KHU VỰC QUIZ
-# ==========================================
-st.subheader("📝 Kiểm tra: Điền từ vào chỗ trống")
-st.info("Bài tập gồm 33 câu. Hãy vận dụng ngữ cảnh để chọn từ chính xác nhất điền vào chỗ trống.")
-
-score = 0
-total_questions = len(st.session_state.quiz_questions)
-
-# Tạo form để nộp bài
-with st.form(key='quiz_form'):
-    for i, q in enumerate(st.session_state.quiz_questions):
-        # Dùng unsafe_allow_html=True để hiển thị thẻ <br> giúp xuống dòng chú thích cho đẹp
-        st.markdown(f"**Câu {i+1}:** {q['question']}", unsafe_allow_html=True)
-        
-        # Streamlit radio để chọn đáp án
-        user_choice = st.radio(
-            label=f"Đáp án câu {i+1}",
-            options=q['options'],
-            horizontal=True,
-            index=None,
-            label_visibility="collapsed",
-            key=f"q_{i}"
-        )
-        
-        # Nếu đã nộp bài, hiển thị kết quả đúng/sai ngay bên dưới câu hỏi
-        if st.session_state.submitted:
-            if user_choice == q['answer']:
-                score += 1
-                st.success(f"✅ Chính xác! ({q['answer']})")
-            elif user_choice is None:
-                st.warning(f"⚠️ Bạn chưa chọn đáp án. Đáp án đúng là: **{q['answer']}**")
-            else:
-                st.error(f"❌ Sai rồi! Đáp án đúng là: **{q['answer']}**")
-                
-        st.write("---") # Đường kẻ mờ chia cách các câu
-
-    # Nút bấm nộp bài
-    submit_button = st.form_submit_button(label="Nộp bài chấm điểm", on_click=submit_quiz)
-
-# Sau khi nộp, hiện điểm và nút làm lại bài
-if st.session_state.submitted:
-    st.subheader("📊 Kết quả của bạn:")
-    st.markdown(f"<h2 style='color:#d32f2f;'>{score} / {total_questions}</h2>", unsafe_allow_html=True)
-    
-    if score == total_questions:
-        st.balloons()
-        st.success("Tuyệt vời! Bạn đã làm đúng tất cả các câu! 🥳")
-    elif score >= 25:
-        st.info("Rất tốt! Bạn nắm vững cách dùng từ và ngữ cảnh. 👍")
-    elif score >= 16:
-        st.warning("Khá ổn, nhưng hãy cẩn thận với các từ loại giống nhau nhé! 💪")
-    else:
-        st.error("Kết quả chưa tốt lắm, bạn hãy lật lại Flashcard để đọc kỹ ví dụ nhé! 📖")
-        
-    st.button("🔄 Làm lại bài (Đảo câu hỏi & Đáp án)", on_click=init_quiz, type="primary")
+    st.markdown(f"<div style='text-align: center; font-size: 16px; padding-top: 5px;'>Từ {st.session_state.card_index + 1} / {len(vocab_list
