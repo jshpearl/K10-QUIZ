@@ -7,7 +7,7 @@ st.set_page_config(page_title="K10 - Ôn tập từ vựng - Bài 2", page_icon=
 # --- DỮ LIỆU TỪ VỰNG ---
 vocab_list = [
     {"hanzi": "重新", "pinyin": "chóngxīn", "meaning": "lại, từ đầu"},
-    {"hanzi": "尽管", "pinyin": "jǐnguǎn", "meaning": "mặc dù, cho dù"},
+    {"hanzi": "尽管", "pinyin": "jǐnguǎn", "meaning": "mặc dù, cho dù / cứ việc"},
     {"hanzi": "真正", "pinyin": "zhēnzhèng", "meaning": "thật sự"},
     {"hanzi": "友谊", "pinyin": "yǒuyì", "meaning": "tình bạn"},
     {"hanzi": "适应", "pinyin": "shìyìng", "meaning": "thích nghi"},
@@ -15,51 +15,86 @@ vocab_list = [
     {"hanzi": "平时", "pinyin": "píngshí", "meaning": "ngày thường"},
     {"hanzi": "逛", "pinyin": "guàng", "meaning": "dạo"},
     {"hanzi": "短信", "pinyin": "duǎnxìn", "meaning": "tin nhắn"},
-    {"hanzi": "正好", "pinyin": "zhènghǎo", "meaning": "đúng lúc"},
-    {"hanzi": "聚会", "pinyin": "jùhuì", "meaning": "tụ họp"},
+    {"hanzi": "正好", "pinyin": "zhènghǎo", "meaning": "đúng lúc, vừa vặn"},
+    {"hanzi": "聚会", "pinyin": "jùhuì", "meaning": "tụ họp, bữa tiệc"},
     {"hanzi": "联系", "pinyin": "liánxì", "meaning": "liên lạc"},
     {"hanzi": "差不多", "pinyin": "chàbuduō", "meaning": "gần như, xấp xỉ"},
-    {"hanzi": "专门", "pinyin": "zhuānmén", "meaning": "đặc biệt, chuyên"},
+    {"hanzi": "专门", "pinyin": "zhuānmén", "meaning": "đặc biệt, chuyên môn"},
     {"hanzi": "毕业", "pinyin": "bìyè", "meaning": "tốt nghiệp"},
-    {"hanzi": "麻烦", "pinyin": "máfan", "meaning": "làm phiền"},
-    {"hanzi": "好像", "pinyin": "hǎoxiàng", "meaning": "hình như, giống như, dường như"}
+    {"hanzi": "麻烦", "pinyin": "máfan", "meaning": "làm phiền, phiền phức"},
+    {"hanzi": "好像", "pinyin": "hǎoxiàng", "meaning": "hình như, dường như"}
 ]
 
-# --- DỮ LIỆU CÂU HỎI TRẮC NGHIỆM ---
+# --- DỮ LIỆU CÂU HỎI TRẮC NGHIỆM (33 Câu: 15 Cũ + 18 Mới) ---
+# Format: (Câu hỏi, Đáp án đúng, [3 đáp án nhiễu có độ khó cao])
 raw_quiz_data = [
-    ("我想_____开始。", "重新"),
-    ("这张画没画好，我要_____画。", "重新"),
-    ("衣服没洗干净，你再_____洗一下。", "重新"),
-    ("一个人除了钱什么都没有，那不是_____的幸福。", "真正"),
-    ("我们12岁的时候第一次见面，我们的_____就开始了。", "友谊"),
-    ("让我们为了两国人民的_____干杯！", "友谊"),
-    ("我已经_____这里的生活了。", "适应"),
-    ("我们要改变自己，努力去_____新的环境。", "适应"),
-    ("我喜欢_____朋友。", "交"),
-    ("我很高兴自己能_____到一个喜欢学汉语的朋友。", "交"),
-    ("我很喜欢画画，_____一有时间就会画一画。", "平时"),
-    ("你注意到没有？小明今天和_____不太一样。", "平时"),
-    ("昨天_____书店的时候，我买了几本书。", "逛"),
-    ("昨天我跟朋友_____街逛到晚上10点多才回家。", "逛"),
-    ("我收到了一条新_____。", "短信"),
-    ("麻烦你发一条_____，告诉我见面的时间和地点。", "短信"),
-    ("我下午也要去踢足球，_____一起去吧。", "正好"),
-    ("明年大学同学_____，你能不能去？", "聚会"),
-    ("跟老朋友_____，吃吃饭、聊聊天儿，多高兴啊！", "聚会"),
-    ("我们一定要保持_____！", "联系"),
-    ("电子邮件是我和老师最常用的_____方式。", "联系"),
-    ("昨天晚上我_____一夜没有睡。", "差不多"),
-    ("我是_____来看你的。", "专门"),
-    ("这一年我打算_____学电脑，别的什么事都不做。", "专门"),
-    ("他是翻译方面的_____人才。", "专门"),
-    ("他儿子才17岁，已经高中_____了。", "毕业"),
-    ("我爸爸_____于清华大学。", "毕业"),
-    ("王老师_____于1994年。", "毕业"),
-    ("_____您了，还专门送我回家，谢谢。", "麻烦"),
-    ("我找不到我的手机了，能不能_____你们帮我找一下。", "麻烦"),
-    ("_____帮我拿一下水杯，我上个洗手间。", "麻烦"),
-    ("你_____很困，睡一会儿吧。", "好像"),
-    ("他_____从来都不会累，总是一副很有精神的样子。", "好像")
+    # Nhóm 重新
+    ("这张画没画好，我要_____画。", "重新", ["专门", "平时", "差不多"]),
+    ("这个计划有些问题，经理要求大家_____考虑一下。", "重新", ["专门", "真正", "好像"]), 
+    
+    # Nhóm 尽管
+    ("_____外面的雨下得很大，他还是坚持去跑步了。", "尽管", ["好像", "平时", "正好"]),
+    ("你以后有什么困难_____跟我们说，大家都会帮你的。", "尽管", ["专门", "重新", "差不多"]),
+    
+    # Nhóm 真正
+    ("一个人除了钱什么都没有，那不是_____的幸福。", "真正", ["专门", "正好", "重新"]),
+    ("只有经历过困难，才能体会到什么叫_____的朋友。", "真正", ["平时", "差不多", "好像"]),
+    
+    # Nhóm 友谊
+    ("让我们为了两国人民的_____干杯！", "友谊", ["聚会", "联系", "短信"]),
+    ("时间和距离都不能改变我们之间的_____。", "友谊", ["聚会", "短信", "麻烦"]),
+    
+    # Nhóm 适应
+    ("我们要改变自己，努力去_____新的环境。", "适应", ["联系", "麻烦", "毕业"]),
+    ("刚到国外留学时，他在饮食和气候上都很难_____。", "适应", ["麻烦", "联系", "交"]),
+    
+    # Nhóm 交
+    ("我很高兴自己能_____到一个喜欢学汉语的朋友。", "交", ["逛", "联系", "麻烦"]),
+    ("他性格很开朗，在大学里_____了许多新朋友。", "交", ["联系", "聚会", "适应"]),
+    
+    # Nhóm 平时
+    ("你注意到没有？小明今天和_____不太一样。", "平时", ["差不多", "正好", "好像"]),
+    ("他_____不怎么爱说话，可是今天却说了很多。", "平时", ["差不多", "专门", "重新"]),
+    
+    # Nhóm 逛
+    ("昨天我跟朋友_____街逛到晚上10点多才回家。", "逛", ["交", "聚会", "联系"]),
+    ("周末我不想待在家里，我们去商场_____吧。", "逛", ["聚会", "联系", "交"]),
+    
+    # Nhóm 短信
+    ("麻烦你发一条_____，告诉我见面的时间和地点。", "短信", ["联系", "友谊", "聚会"]),
+    ("上课的时候不能接电话，有急事你可以给我发_____。", "短信", ["联系", "聚会", "友谊"]),
+    
+    # Nhóm 正好
+    ("我下午也要去踢足球，_____一起去吧。", "正好", ["专门", "重新", "差不多"]),
+    ("这件衣服不大不小，你穿_____。", "正好", ["差不多", "真正", "平时"]),
+    
+    # Nhóm 聚会
+    ("跟老朋友_____，吃吃饭、聊聊天儿，多高兴啊！", "聚会", ["联系", "友谊", "适应"]),
+    ("大家都忙于工作，连春节的家庭_____都没时间参加。", "聚会", ["联系", "友谊", "逛"]),
+    
+    # Nhóm 联系
+    ("电子邮件是我和老师最常用的_____方式。", "联系", ["聚会", "友谊", "交"]),
+    ("换了新手机号码后，记得及时跟所有的客户_____。", "联系", ["交", "适应", "聚会"]),
+    
+    # Nhóm 差不多
+    ("昨天晚上我_____一夜没有睡。", "差不多", ["平时", "重新", "好像"]),
+    ("这两支笔的颜色看起来_____，很难分清楚。", "差不多", ["好像", "正好", "平时"]),
+    
+    # Nhóm 专门
+    ("这一年我打算_____学电脑，别的什么事都不做。", "专门", ["重新", "平时", "真正"]),
+    ("为了欢迎你回国，我_____做了一桌你最爱吃的菜。", "专门", ["正好", "重新", "差不多"]),
+    
+    # Nhóm 毕业
+    ("他儿子才17岁，已经高中_____了。", "毕业", ["联系", "适应", "麻烦"]),
+    ("大学_____以后，他决定留在北京发展。", "毕业", ["联系", "聚会", "适应"]),
+    
+    # Nhóm 麻烦
+    ("我找不到我的手机了，能不能_____你们帮我找一下。", "麻烦", ["联系", "交", "适应"]),
+    ("这件事处理起来太_____了，我们需要更多的时间。", "麻烦", ["适应", "联系", "毕业"]),
+    
+    # Nhóm 好像
+    ("他_____从来都不会累，总是一副很有精神的样子。", "好像", ["差不多", "平时", "尽管"]),
+    ("天阴了，看样子_____要下大雨，出门记得带伞。", "好像", ["差不多", "尽管", "重新"])
 ]
 
 # --- QUẢN LÝ TRẠNG THÁI (SESSION STATE) ---
@@ -68,25 +103,19 @@ if 'card_index' not in st.session_state:
 
 def init_quiz():
     """Khởi tạo hoặc làm mới bài Quiz"""
-    all_words = [item["hanzi"] for item in vocab_list]
     questions = []
     
-    for q_text, ans in raw_quiz_data:
-        options = [ans]
-        # Lấy thêm 3 đáp án sai ngẫu nhiên
-        while len(options) < 4:
-            w = random.choice(all_words)
-            if w not in options:
-                options.append(w)
-        random.shuffle(options)
+    for q_text, correct, distractors in raw_quiz_data:
+        options = [correct] + distractors
+        random.shuffle(options) # Đảo vị trí các đáp án A B C D
         
         questions.append({
             "question": q_text,
-            "answer": ans,
+            "answer": correct,
             "options": options
         })
     
-    # Xáo trộn thứ tự các câu hỏi
+    # Xáo trộn thứ tự 33 câu hỏi
     random.shuffle(questions)
     st.session_state.quiz_questions = questions
     st.session_state.submitted = False
@@ -209,7 +238,7 @@ st.markdown("---")
 # 2. KHU VỰC QUIZ
 # ==========================================
 st.subheader("📝 Kiểm tra: Điền từ vào chỗ trống")
-st.info("Chọn từ thích hợp để điền vào chỗ trống trong các câu dưới đây.")
+st.info("Bài tập gồm 33 câu. Hãy vận dụng ngữ cảnh để chọn từ chính xác nhất điền vào chỗ trống.")
 
 score = 0
 total_questions = len(st.session_state.quiz_questions)
@@ -219,7 +248,7 @@ with st.form(key='quiz_form'):
     for i, q in enumerate(st.session_state.quiz_questions):
         st.markdown(f"**Câu {i+1}:** {q['question']}")
         
-        # Streamlit radio để chọn đáp án (index=None bắt người dùng phải tự click)
+        # Streamlit radio để chọn đáp án
         user_choice = st.radio(
             label=f"Đáp án câu {i+1}",
             options=q['options'],
@@ -252,9 +281,11 @@ if st.session_state.submitted:
     if score == total_questions:
         st.balloons()
         st.success("Tuyệt vời! Bạn đã làm đúng tất cả các câu! 🥳")
-    elif score > total_questions * 0.7:
-        st.info("Rất tốt! Bạn nắm khá vững từ vựng rồi đó. 👍")
+    elif score >= 25:
+        st.info("Rất tốt! Bạn nắm vững cách dùng từ và ngữ cảnh. 👍")
+    elif score >= 16:
+        st.warning("Khá ổn, nhưng hãy cẩn thận với các từ loại giống nhau nhé! 💪")
     else:
-        st.warning("Cố gắng ôn tập thêm trên Flashcard nhé! 💪")
+        st.error("Kết quả chưa tốt lắm, bạn hãy lật lại Flashcard để đọc kỹ ví dụ nhé! 📖")
         
-    st.button("🔄 Làm lại bài (Đổi ngẫu nhiên câu hỏi & đáp án)", on_click=init_quiz, type="primary")
+    st.button("🔄 Làm lại bài (Đảo câu hỏi & Đáp án)", on_click=init_quiz, type="primary")
