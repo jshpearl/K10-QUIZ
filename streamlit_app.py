@@ -25,16 +25,16 @@ vocab_list = [
     {"hanzi": "好像", "pinyin": "hǎoxiàng", "meaning": "hình như, dường như"}
 ]
 
-# --- DỮ LIỆU CÂU HỎI TRẮC NGHIỆM (33 Câu: 15 Cũ + 18 Mới) ---
+# --- DỮ LIỆU CÂU HỎI TRẮC NGHIỆM (33 Câu) ---
 # Format: (Câu hỏi, Đáp án đúng, [3 đáp án nhiễu có độ khó cao])
 raw_quiz_data = [
     # Nhóm 重新
     ("这张画没画好，我要_____画。", "重新", ["专门", "平时", "差不多"]),
     ("这个计划有些问题，经理要求大家_____考虑一下。", "重新", ["专门", "真正", "好像"]), 
     
-    # Nhóm 尽管
-    ("_____外面的雨下得很大，他还是坚持去跑步了。", "尽管", ["好像", "平时", "正好"]),
-    ("你以后有什么困难_____跟我们说，大家都会帮你的。", "尽管", ["专门", "重新", "差不多"]),
+    # Nhóm 尽管 (Đã thay bằng 2 câu từ vựng HSK2-3 cực kỳ dễ hiểu)
+    ("_____我很累，但是我也要把今天的作业写完。", "尽管", ["好像", "平时", "正好"]),
+    ("_____这家饭馆的菜很好吃，可是价格太贵了。", "尽管", ["专门", "重新", "差不多"]),
     
     # Nhóm 真正
     ("一个人除了钱什么都没有，那不是_____的幸福。", "真正", ["专门", "正好", "重新"]),
@@ -72,9 +72,9 @@ raw_quiz_data = [
     ("跟老朋友_____，吃吃饭、聊聊天儿，多高兴啊！", "聚会", ["联系", "友谊", "适应"]),
     ("大家都忙于工作，连春节的家庭_____都没时间参加。", "聚会", ["联系", "友谊", "逛"]),
     
-    # Nhóm 联系
+    # Nhóm 联系 (Đã bổ sung chú thích từ vựng)
     ("电子邮件是我和老师最常用的_____方式。", "联系", ["聚会", "友谊", "交"]),
-    ("换了新手机号码后，记得及时跟所有的客户_____。", "联系", ["交", "适应", "聚会"]),
+    ("换了新手机号码后，记得及时跟所有的客户_____。<br>*(Chú thích: 及时 /jíshí/: kịp thời; 客户 /kèhù/: khách hàng)*", "联系", ["交", "适应", "聚会"]),
     
     # Nhóm 差不多
     ("昨天晚上我_____一夜没有睡。", "差不多", ["平时", "重新", "好像"]),
@@ -246,7 +246,8 @@ total_questions = len(st.session_state.quiz_questions)
 # Tạo form để nộp bài
 with st.form(key='quiz_form'):
     for i, q in enumerate(st.session_state.quiz_questions):
-        st.markdown(f"**Câu {i+1}:** {q['question']}")
+        # Dùng unsafe_allow_html=True để hiển thị thẻ <br> giúp xuống dòng chú thích cho đẹp
+        st.markdown(f"**Câu {i+1}:** {q['question']}", unsafe_allow_html=True)
         
         # Streamlit radio để chọn đáp án
         user_choice = st.radio(
