@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # --- CẤU HÌNH TRANG ---
-st.set_page_config(page_title="Ôn tập Từ vựng HSK 4", page_icon="📚", layout="centered")
+st.set_page_config(page_title="K10 - Ôn tập từ vựng - Bài 2", page_icon="📚", layout="centered")
 
 # --- DỮ LIỆU TỪ VỰNG ---
 vocab_list = [
@@ -25,52 +25,75 @@ vocab_list = [
     {"hanzi": "好像", "pinyin": "hǎoxiàng", "meaning": "hình như, giống như, dường như"}
 ]
 
-# --- DỮ LIỆU CÂU LÀM BÀI TẬP ---
-sentences = [
-    "我想重新开始。",
-    "这张画没画好，我要重新画。",
-    "衣服没洗干净，你再重新洗一下。",
-    "一个人除了钱什么都没有，那不是真正的幸福。",
-    "我们12岁的时候第一次见面，我们的友谊就开始了。",
-    "让我们为了两国人民的友谊干杯！",
-    "我已经适应这里的生活了。",
-    "我们要改变自己，努力去适应新的环境。",
-    "我喜欢交朋友。",
-    "我很高兴自己能交到一个喜欢学汉语的朋友。",
-    "我很喜欢画画，平时一有时间就会画一画。",
-    "你注意到没有？小明今天和平时不太一样。",
-    "昨天逛书店的时候，我买了几本书。",
-    "昨天我跟朋友逛街逛到晚上10点多才回家。",
-    "我收到了一条新短信。",
-    "麻烦你发一条短信，告诉我见面的时间和地点。",
-    "我下午也要去踢足球，正好一起去吧。",
-    "明年大学同学聚会，你能不能去？",
-    "跟老朋友聚会，吃吃饭、聊聊天儿，多高兴啊！",
-    "我们一定要保持联系！",
-    "电子邮件是我和老师最常用的联系方式。",
-    "昨天晚上我差不多一夜没有睡。",
-    "我是专门来看你的。",
-    "这一年我打算专门学电脑，别的什么事都不做。",
-    "他是翻译方面的专门人才。",
-    "他儿子才17岁，已经高中毕业了。",
-    "我爸爸毕业于清华大学。",
-    "王老师毕业于1994年。",
-    "麻烦您了，还专门送我回家，谢谢。",
-    "我找不到我的手机了，能不能麻烦你们帮我找一下。",
-    "麻烦帮我拿一下水杯，我上个洗手间。",
-    "你好像很困，睡一会儿吧。",
-    "他好像从来都不会累，总是一副很有精神的样子。"
+# --- DỮ LIỆU CÂU HỎI TRẮC NGHIỆM ---
+raw_quiz_data = [
+    ("我想_____开始。", "重新"),
+    ("这张画没画好，我要_____画。", "重新"),
+    ("衣服没洗干净，你再_____洗一下。", "重新"),
+    ("一个人除了钱什么都没有，那不是_____的幸福。", "真正"),
+    ("我们12岁的时候第一次见面，我们的_____就开始了。", "友谊"),
+    ("让我们为了两国人民的_____干杯！", "友谊"),
+    ("我已经_____这里的生活了。", "适应"),
+    ("我们要改变自己，努力去_____新的环境。", "适应"),
+    ("我喜欢_____朋友。", "交"),
+    ("我很高兴自己能_____到一个喜欢学汉语的朋友。", "交"),
+    ("我很喜欢画画，_____一有时间就会画一画。", "平时"),
+    ("你注意到没有？小明今天和_____不太一样。", "平时"),
+    ("昨天_____书店的时候，我买了几本书。", "逛"),
+    ("昨天我跟朋友_____街逛到晚上10点多才回家。", "逛"),
+    ("我收到了一条新_____。", "短信"),
+    ("麻烦你发一条_____，告诉我见面的时间和地点。", "短信"),
+    ("我下午也要去踢足球，_____一起去吧。", "正好"),
+    ("明年大学同学_____，你能不能去？", "聚会"),
+    ("跟老朋友_____，吃吃饭、聊聊天儿，多高兴啊！", "聚会"),
+    ("我们一定要保持_____！", "联系"),
+    ("电子邮件是我和老师最常用的_____方式。", "联系"),
+    ("昨天晚上我_____一夜没有睡。", "差不多"),
+    ("我是_____来看你的。", "专门"),
+    ("这一年我打算_____学电脑，别的什么事都不做。", "专门"),
+    ("他是翻译方面的_____人才。", "专门"),
+    ("他儿子才17岁，已经高中_____了。", "毕业"),
+    ("我爸爸_____于清华大学。", "毕业"),
+    ("王老师_____于1994年。", "毕业"),
+    ("_____您了，还专门送我回家，谢谢。", "麻烦"),
+    ("我找不到我的手机了，能不能_____你们帮我找一下。", "麻烦"),
+    ("_____帮我拿一下水杯，我上个洗手间。", "麻烦"),
+    ("你_____很困，睡一会儿吧。", "好像"),
+    ("他_____从来都不会累，总是一副很有精神的样子。", "好像")
 ]
 
 # --- QUẢN LÝ TRẠNG THÁI (SESSION STATE) ---
 if 'card_index' not in st.session_state:
     st.session_state.card_index = 0
 
-# Khởi tạo danh sách câu đã xáo trộn lần đầu
-if 'shuffled_sentences' not in st.session_state:
-    temp_sentences = sentences.copy()
-    random.shuffle(temp_sentences)
-    st.session_state.shuffled_sentences = temp_sentences
+def init_quiz():
+    """Khởi tạo hoặc làm mới bài Quiz"""
+    all_words = [item["hanzi"] for item in vocab_list]
+    questions = []
+    
+    for q_text, ans in raw_quiz_data:
+        options = [ans]
+        # Lấy thêm 3 đáp án sai ngẫu nhiên
+        while len(options) < 4:
+            w = random.choice(all_words)
+            if w not in options:
+                options.append(w)
+        random.shuffle(options)
+        
+        questions.append({
+            "question": q_text,
+            "answer": ans,
+            "options": options
+        })
+    
+    # Xáo trộn thứ tự các câu hỏi
+    random.shuffle(questions)
+    st.session_state.quiz_questions = questions
+    st.session_state.submitted = False
+
+# Chạy khởi tạo lần đầu tiên
+if 'quiz_questions' not in st.session_state:
+    init_quiz()
 
 def next_card():
     if st.session_state.card_index < len(vocab_list) - 1:
@@ -84,17 +107,18 @@ def prev_card():
     else:
         st.session_state.card_index = len(vocab_list) - 1
 
-def reshuffle_sentences():
-    temp_sentences = sentences.copy()
-    random.shuffle(temp_sentences)
-    st.session_state.shuffled_sentences = temp_sentences
+def submit_quiz():
+    st.session_state.submitted = True
 
 # --- GIAO DIỆN CHÍNH ---
-st.title("📚 Lớp học HSK 4 - Ôn tập Từ vựng")
+st.title("📚 K10 - Ôn tập từ vựng - Bài 2")
 st.markdown("---")
 
+# ==========================================
 # 1. KHU VỰC FLASHCARD
-st.subheader("💡 Flashcard (Di chuột hoặc chạm vào thẻ để lật)")
+# ==========================================
+st.subheader("💡 Ôn tập Flashcard")
+st.caption("Di chuột (hoặc chạm vào thẻ) để xem Pinyin và Nghĩa.")
 
 current_word = vocab_list[st.session_state.card_index]
 
@@ -103,7 +127,7 @@ flip_card_css = f"""
 .flip-card {{
   background-color: transparent;
   width: 100%;
-  height: 300px;
+  height: 250px;
   perspective: 1000px;
   margin-bottom: 20px;
 }}
@@ -135,25 +159,25 @@ flip_card_css = f"""
 }}
 .flip-card-front {{
   background-color: #ffffff;
-  color: #d32f2f;
-  border: 2px solid #ffcdd2;
+  color: #1565c0;
+  border: 2px solid #bbdefb;
 }}
 .flip-card-back {{
-  background-color: #d32f2f;
+  background-color: #1565c0;
   color: white;
   transform: rotateY(180deg);
 }}
 .hanzi-text {{
-  font-size: 80px;
+  font-size: 70px;
   font-weight: bold;
   font-family: 'KaiTi', 'SimSun', serif;
 }}
 .pinyin-text {{
-  font-size: 30px;
+  font-size: 28px;
   margin-bottom: 15px;
 }}
 .meaning-text {{
-  font-size: 24px;
+  font-size: 22px;
 }}
 </style>
 
@@ -169,27 +193,68 @@ flip_card_css = f"""
   </div>
 </div>
 """
-
 st.markdown(flip_card_css, unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns([1, 2, 1])
 with col1:
-    st.button("⬅️ Từ trước", on_click=prev_card, use_container_width=True)
+    st.button("⬅️ Trước", on_click=prev_card, use_container_width=True)
 with col2:
-    st.markdown(f"<div style='text-align: center; font-size: 18px; padding-top: 10px;'>Từ {st.session_state.card_index + 1} / {len(vocab_list)}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='text-align: center; font-size: 16px; padding-top: 5px;'>Từ {st.session_state.card_index + 1} / {len(vocab_list)}</div>", unsafe_allow_html=True)
 with col3:
-    st.button("Từ tiếp ➡️", on_click=next_card, use_container_width=True)
+    st.button("Tiếp ➡️", on_click=next_card, use_container_width=True)
 
 st.markdown("---")
 
-# 2. KHU VỰC ÔN TẬP CÂU
-st.subheader("📝 Luyện Đọc: Ôn tập mẫu câu")
-st.info("Hãy đọc to và dịch nghĩa các câu dưới đây (Không sử dụng Pinyin để luyện phản xạ mặt chữ).")
+# ==========================================
+# 2. KHU VỰC QUIZ
+# ==========================================
+st.subheader("📝 Kiểm tra: Điền từ vào chỗ trống")
+st.info("Chọn từ thích hợp để điền vào chỗ trống trong các câu dưới đây.")
 
-# Nút để xáo trộn lại
-st.button("🔀 Xáo trộn câu hỏi", on_click=reshuffle_sentences)
-st.write("") # Tạo khoảng trắng
+score = 0
+total_questions = len(st.session_state.quiz_questions)
 
-# In danh sách các câu đã được xáo trộn
-for i, sentence in enumerate(st.session_state.shuffled_sentences, 1):
-    st.markdown(f"**{i}.** {sentence}")
+# Tạo form để nộp bài
+with st.form(key='quiz_form'):
+    for i, q in enumerate(st.session_state.quiz_questions):
+        st.markdown(f"**Câu {i+1}:** {q['question']}")
+        
+        # Streamlit radio để chọn đáp án (index=None bắt người dùng phải tự click)
+        user_choice = st.radio(
+            label=f"Đáp án câu {i+1}",
+            options=q['options'],
+            horizontal=True,
+            index=None,
+            label_visibility="collapsed",
+            key=f"q_{i}"
+        )
+        
+        # Nếu đã nộp bài, hiển thị kết quả đúng/sai ngay bên dưới câu hỏi
+        if st.session_state.submitted:
+            if user_choice == q['answer']:
+                score += 1
+                st.success(f"✅ Chính xác! ({q['answer']})")
+            elif user_choice is None:
+                st.warning(f"⚠️ Bạn chưa chọn đáp án. Đáp án đúng là: **{q['answer']}**")
+            else:
+                st.error(f"❌ Sai rồi! Đáp án đúng là: **{q['answer']}**")
+                
+        st.write("---") # Đường kẻ mờ chia cách các câu
+
+    # Nút bấm nộp bài
+    submit_button = st.form_submit_button(label="Nộp bài chấm điểm", on_click=submit_quiz)
+
+# Sau khi nộp, hiện điểm và nút làm lại bài
+if st.session_state.submitted:
+    st.subheader("📊 Kết quả của bạn:")
+    st.markdown(f"<h2 style='color:#d32f2f;'>{score} / {total_questions}</h2>", unsafe_allow_html=True)
+    
+    if score == total_questions:
+        st.balloons()
+        st.success("Tuyệt vời! Bạn đã làm đúng tất cả các câu! 🥳")
+    elif score > total_questions * 0.7:
+        st.info("Rất tốt! Bạn nắm khá vững từ vựng rồi đó. 👍")
+    else:
+        st.warning("Cố gắng ôn tập thêm trên Flashcard nhé! 💪")
+        
+    st.button("🔄 Làm lại bài (Đổi ngẫu nhiên câu hỏi & đáp án)", on_click=init_quiz, type="primary")
